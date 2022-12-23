@@ -3,7 +3,7 @@
 require_relative "lib/csvbuilder/dynamic/columns/exporter/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "csvbuilder-dynamic-columns"
+  spec.name = "csvbuilder-dynamic-columns-exporter"
   spec.version = Csvbuilder::Dynamic::Columns::Exporter::VERSION
   spec.authors = ["Joel Azemar"]
   spec.email = ["joel.azemar@gmail.com"]
@@ -11,13 +11,13 @@ Gem::Specification.new do |spec|
   spec.summary       = "Csvbuilder Dynamic Columns contain the components to handle CSV dynamic columns"
   spec.description   = "Help handle CSVs in a more efficient way"
 
-  spec.homepage = "https://github.com/joel/csvbuilder-dynamic-columns"
+  spec.homepage = "https://github.com/joel/csvbuilder-dynamic-columns-exporter"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.6.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
-  spec.metadata["changelog_uri"] = "https://github.com/joel/csvbuilder-dynamic-columns/blob/main/CHANGELOG.md"
+  spec.metadata["changelog_uri"] = "https://github.com/joel/csvbuilder-dynamic-columns-exporter/blob/main/CHANGELOG.md"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
