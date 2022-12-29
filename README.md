@@ -1,22 +1,65 @@
-# Csvbuilder::Dynamic::Columns
+# Csvbuilder::Dynamic::Columns::Exporter
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/csvbuilder/dynamic/columns`. To experiment with that code, run `bin/console` for an interactive prompt.
+[Csvbuilder::Dynamic::Columns::Exporter](https://github.com/joel/csvbuilder-dynamic-columns-exporter) is part of the [csvbuilder-collection](https://github.com/joel/csvbuilder)
 
-TODO: Delete this and the text above, and describe your gem
+The Dynamic Columns Exporter contains the implementation for exporting a collection of objects within a variable group as a CSV file.
+
+For instance, any object belonging to categories.
 
 ## Installation
 
 Install the gem and add to the application's Gemfile by executing:
 
-    $ bundle add csvbuilder-dynamic-columns
+    $ bundle add csvbuilder-dynamic-columns-exporter
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
-    $ gem install csvbuilder-dynamic-columns
+    $ gem install csvbuilder-dynamic-columns-exporter
 
 ## Usage
 
-TODO: Write usage instructions here
+Let's consider a user with languages skill.
+
+```ruby
+class UserCsvRowModel
+  include Csvbuilder::Model
+  include Csvbuilder::Export
+
+  column :name, header: "Developer"
+
+  dynamic_column :skills
+
+  def skill(skill_name)
+    source_model.skills.where(name: skill_name).exists? ? "1" : "0"
+  end
+end
+```
+
+For each row, a method called by the singular version name of the declared Dynamic Columns will be called to determine the cell's value. You have to implement it in your Exporter Model.
+
+You have access to the `source_model`, it is the object appended by the File Exporter to the Row, in our example, the User.
+
+The dynamic part of the headers must be provided through the context under the same key name as the declared Dynamic Columns, here `skills`.
+
+```ruby
+context = { skills: ["Ruby", "Python", "Javascript"] }
+
+exporter  = Csvbuilder::Export::File.new(UserCsvExportModel, context)
+
+exporter.headers
+# => ["Developer", "Ruby", "Python", "Javascript"]
+
+sub_context = {}
+
+exporter.generate do |csv|
+  User.all.each do |user|
+    csv.append_model(user, sub_context) # user here is the source_model.
+  end
+end
+
+exporter.to_s
+# => "Developer,Ruby,Python,Javascript\Bob,1,0,0\n"
+```
 
 ## Development
 
@@ -26,7 +69,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/csvbuilder-dynamic-columns. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/csvbuilder-dynamic-columns/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/joel/csvbuilder-dynamic-columns. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/csvbuilder-dynamic-columns/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
