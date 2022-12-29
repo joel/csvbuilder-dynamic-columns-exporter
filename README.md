@@ -61,6 +61,48 @@ exporter.to_s
 # => "Developer,Ruby,Python,Javascript\Bob,1,0,0\n"
 ```
 
+## Format Dynamic Columns
+
+Instead of taking care of the formatting directly in the dynamic cell method, here `skill`, it can be delegated to `format_dynamic_column_cells.`
+
+Consider the following rewrite:
+
+```ruby
+class UserCsvRowModel
+  include Csvbuilder::Model
+
+  column :name, header: "Developer"
+
+  dynamic_column :skills
+end
+```
+
+```ruby
+class UserCsvExportModel < UserCsvRowModel
+  include Csvbuilder::Export
+
+  def skill(skill_name)
+    source_model.skills.where(name: skill_name).exists?
+  end
+
+  class << self
+    def format_dynamic_column_cells(cells, _column_name, _context)
+      cells.map do |cell|
+        case cell
+        when true
+          "1"
+        when false
+          "0"
+        else
+          "N/A"
+        end
+      end
+    end
+  end
+
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
