@@ -18,7 +18,7 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-Let's consider a user with languages skill.
+Let's consider a Developer with languages skill.
 
 ```ruby
 class UserCsvRowModel
@@ -35,9 +35,9 @@ class UserCsvRowModel
 end
 ```
 
-For each row, a method called by the singular version name of the declared Dynamic Columns will be called to determine the cell's value. You have to implement it in your Exporter Model.
+For each Row, a method called by the singular version name of the declared Dynamic Columns will be called to determine the cell's value. In our example: `skill` must be implemented in the Exporter Model.
 
-You have access to the `source_model`, it is the object appended by the File Exporter to the Row, in our example, the User.
+The `source_model` is provided and accessible within this method. In our example, it is the `User`. The File Exporter appends this object to the Row.
 
 The dynamic part of the headers must be provided through the context under the same key name as the declared Dynamic Columns, here `skills`.
 
@@ -49,7 +49,7 @@ exporter  = Csvbuilder::Export::File.new(UserCsvExportModel, context)
 exporter.headers
 # => ["Developer", "Ruby", "Python", "Javascript"]
 
-sub_context = {}
+sub_context = {} # it merged to the context
 
 exporter.generate do |csv|
   User.all.each do |user|
