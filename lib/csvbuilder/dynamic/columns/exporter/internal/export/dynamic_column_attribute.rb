@@ -6,7 +6,7 @@ module Csvbuilder
   module Export
     class DynamicColumnAttribute < Csvbuilder::DynamicColumnAttributeBase
       def unformatted_value
-        formatted_cells
+        source_cells
       end
 
       def source_cells

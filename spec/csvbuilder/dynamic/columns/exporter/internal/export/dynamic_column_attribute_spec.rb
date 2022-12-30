@@ -22,7 +22,7 @@ module Csvbuilder
           subject(:unformatted_value) { instance.unformatted_value }
 
           it "calls formatted_cells" do
-            expect(instance).to receive(:formatted_cells)
+            expect(instance).to receive(:source_cells)
             unformatted_value
           end
         end
