@@ -103,6 +103,49 @@ class UserCsvExportModel < UserCsvRowModel
 end
 ```
 
+### Propagate default formatting
+
+If a default formatting is defined, it will not automatically be propagated to the dynamic cells, which could cause edge cases.
+
+```ruby
+class UserCsvRowModel
+  include Csvbuilder::Model
+
+  column :name
+
+  dynamic_column :skills
+
+  class << self
+
+    def format_cell(cell, _column_name, _context)
+      "- #{cell} -"
+    end
+
+  end
+end
+```
+
+To propagate it, recall the default formatting in dynamic columns formatting as follow:
+
+```ruby
+class UserCsvExportModel < UserCsvRowModel
+  include Csvbuilder::Export
+
+  def skill(skill_name)
+    source_model.skills.where(name: skill_name).exists? ? "1" : "0"
+  end
+
+  class << self
+    def format_dynamic_column_cells(cells, _column_name, _context)
+      cells.map do |cell|
+        format_cell(cell, _column_name, _context)
+      end
+    end
+  end
+
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
