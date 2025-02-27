@@ -5,6 +5,8 @@ require "spec_helper"
 module Csvbuilder
   module Export
     RSpec.describe DynamicColumnAttribute do
+      let(:source_model) { double("source_model") }
+
       describe "instance" do
         let(:instance) { described_class.new(:skills, row_model) }
         let(:row_model_class) do
@@ -14,7 +16,7 @@ module Csvbuilder
             dynamic_column :skills
           end
         end
-        let(:row_model) { row_model_class.new(nil, skills: Skill.all) }
+        let(:row_model) { row_model_class.new(source_model, skills: Skill.all) }
 
         it_behaves_like "has_needed_value_methods", Csvbuilder::DynamicColumnsBase
 
