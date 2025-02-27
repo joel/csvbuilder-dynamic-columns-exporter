@@ -1,8 +1,12 @@
 ## [Unreleased]
 
+## [0.1.3] - 2024-02-27
+
+- Relax Rails Constraint
+
 ## [0.1.2] - 2024-02-27
 
-- Update Ruby 3.4 and Relax Rails Constraint
+- Update Ruby 3.4
 
 ## [0.1.1] - 2022-12-30
 
